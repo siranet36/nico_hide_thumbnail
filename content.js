@@ -1,11 +1,11 @@
 function init() {
-	chrome.storage.sync.get(["levels"], function (result) {
-		var hideLevels = [];
-		var levels = result.levels ? result.levels : "";
-		hideLevels = levels.split(",");
+	chrome.storage.sync.get(["names"], function (result) {
+		var ngNames = [];
+		var names = result.names ? result.names : "";
+		ngNames = names.split(",");
 
 		var result = document.evaluate(
-			"//*",
+			"//li[@class='___item___17iVx']",
 			document,
 			null,
 			XPathResult.ORDERED_NODE_ITERATOR_TYPE,
@@ -17,30 +17,33 @@ function init() {
 
 		var element = result.iterateNext();
 		while (element) {
-			if (element.nodeName == "DIV") {
-				var id = element.getAttribute("id");
-				if (hideLevels.includes(id)) {
-					console.log(element.getAttribute("id"));
-					if (element.childNodes.length == 0) {
-						continue;
-					}
-					var tag1 = element.childNodes[0]; // a
-					if (tag1.nodeName == "A") {
-						// ニコニ広告以外のサムネ
-						atags.push(tag1);
-					} else {
-						if (element.childNodes.length == 2) {
-							var child = element.childNodes[0];
-							if (child.childNodes.length == 3) {
-								var child2 = child.childNodes[1];
-								if (child2.nodeName == "A") {
-									// ニコニ広告のサムネ
-									atags.push(child2);
-								}
-							}
-						}
-					}
-				}
+			console.log(element);
+			var atag = element.childNodes[0].childNodes[0];
+			var nametag = element.childNodes[0].childNodes[1]
+				.childNodes[1].childNodes[0].childNodes[1];
+//			console.log(nametag.textContent);
+			if (isNgName(ngNames, nametag.textContent)) {
+				atags.push(atag);
+			}
+			element = result.iterateNext();
+		}
+
+		result = document.evaluate(
+			"//li[@class='___item___3gSaG']",
+			document,
+			null,
+			XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+			null
+		);
+
+		element = result.iterateNext();
+		while (element) {
+			var atag = element.childNodes[0].childNodes[0].childNodes[1];
+			var nametag = element.childNodes[0].childNodes[1]
+				.childNodes[1].childNodes[0].childNodes[1];
+//			console.log(nametag.textContent);
+			if (isNgName(ngNames, nametag.textContent)) {
+				atags.push(atag);
 			}
 			element = result.iterateNext();
 		}
@@ -53,6 +56,15 @@ function init() {
 			}
 		});
 	});
+}
+
+function isNgName(ngNames, name) {
+	for (const element of ngNames) {
+		if (name.indexOf(element) != -1) {
+			return true;
+		}
+	}
+	return false;
 }
 
 window.addEventListener("load", init);

@@ -3,15 +3,15 @@ function $(id) {
 }
 
 function init() {
-	chrome.storage.sync.get(["levels"], function (result) {
-		$("levels").value = result.levels ? result.levels : "";
+	chrome.storage.sync.get(["names"], function (result) {
+		$("names").value = result.names ? result.names : "";
 	});
 	let button = document.getElementById("save_button");
 	button.addEventListener("click", save);
 }
 
 function save(event) {
-	chrome.storage.sync.set({ levels: $("levels").value });
+	chrome.storage.sync.set({ names: $("names").value });
 }
 
 window.addEventListener("load", init);
