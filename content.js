@@ -17,11 +17,12 @@ function init() {
 
 		var element = result.iterateNext();
 		while (element) {
-			console.log(element);
+			//			console.log(element);
 			var atag = element.childNodes[0].childNodes[0];
-			var nametag = element.childNodes[0].childNodes[1]
-				.childNodes[1].childNodes[0].childNodes[1];
-//			console.log(nametag.textContent);
+			var nametag =
+				element.childNodes[0].childNodes[1].childNodes[1].childNodes[0]
+					.childNodes[1];
+			//			console.log(nametag.textContent);
 			if (isNgName(ngNames, nametag.textContent)) {
 				atags.push(atag);
 			}
@@ -39,9 +40,10 @@ function init() {
 		element = result.iterateNext();
 		while (element) {
 			var atag = element.childNodes[0].childNodes[0].childNodes[1];
-			var nametag = element.childNodes[0].childNodes[1]
-				.childNodes[1].childNodes[0].childNodes[1];
-//			console.log(nametag.textContent);
+			var nametag =
+				element.childNodes[0].childNodes[1].childNodes[1].childNodes[0]
+					.childNodes[1];
+			//			console.log(nametag.textContent);
 			if (isNgName(ngNames, nametag.textContent)) {
 				atags.push(atag);
 			}
@@ -68,3 +70,6 @@ function isNgName(ngNames, name) {
 }
 
 window.addEventListener("load", init);
+window.addEventListener("resize", init);
+window.addEventListener("scroll", init);
+document.addEventListener("visibilitychange", init);
